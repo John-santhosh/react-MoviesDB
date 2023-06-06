@@ -41,10 +41,6 @@ const Series = () => {
     fetchMovies();
   }, [page, genereForURL]);
 
-  if (loading) {
-    return <div className="custom-loader"></div>;
-  }
-
   return (
     <div>
       <span className="pageTitle">Discover Series</span>
@@ -57,27 +53,34 @@ const Series = () => {
         page={page}
         setPage={setPage}
       />
-      <div className="trending">
-        {content.length === 0 ? (
-          <div className="notFound">
-            <h2>Sorry! No Movies found</h2>
+      {loading ? (
+        <div className="custom-loader"></div>
+      ) : (
+        <>
+          {" "}
+          <div className="trending">
+            {content.length === 0 ? (
+              <div className="notFound">
+                <h2>Sorry! No Movies found</h2>
+              </div>
+            ) : (
+              content.map((item) => (
+                <SingleContent
+                  key={item.id}
+                  id={item.id}
+                  poster={item.poster_path}
+                  title={item.title || item.name}
+                  date={item.first_air_date || item.release_date}
+                  media_type="tv"
+                  vote_average={item.vote_average}
+                />
+              ))
+            )}
           </div>
-        ) : (
-          content.map((item) => (
-            <SingleContent
-              key={item.id}
-              id={item.id}
-              poster={item.poster_path}
-              title={item.title || item.name}
-              date={item.first_air_date || item.release_date}
-              media_type="tv"
-              vote_average={item.vote_average}
-            />
-          ))
-        )}
-      </div>
-      {numOfPages > 1 && (
-        <CustomPagination numOfPages={500} setPage={setPage} page={page} />
+          {numOfPages > 1 && (
+            <CustomPagination numOfPages={200} setPage={setPage} page={page} />
+          )}
+        </>
       )}
     </div>
   );

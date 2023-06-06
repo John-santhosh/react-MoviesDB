@@ -3,10 +3,12 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-import { options } from "../../config/config";
+import { useState } from "react";
+import { img_500, options, unavailable } from "../../config/config";
 import axios from "axios";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import "./ContentModal.css";
+import Carousel from "../../compponents/Carousel/Carousel";
 
 const style = {
   position: "absolute",
@@ -14,7 +16,12 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "90%",
-  height: "80%",
+  overflow: "auto",
+  scrollbarWidth: "none !important",
+
+  // minHeight: "900px",
+  maxHeight: "80%",
+  // height: "2000px",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -22,33 +29,63 @@ const style = {
   p: 4,
 };
 
-const fetchData = async (id) => {
-  console.log(id);
-  try {
-    const { data } = await axios(
-      `https://api.themoviedb.org/3/$find/${id}?external_source=imdb_id`
-    );
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export default function ContentModal({ children, media_type, id }) {
+function ContentModal({ children, media_type, id }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [content, setContent] = useState([]);
+  const [video, setVideo] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const fetchData = async (id) => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `https://api.themoviedb.org/3/${media_type}/${id}?external_source=tvdb_id`,
+        options
+      );
+      setLoading(false);
+      // console.log(data);
+      setContent(data);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
+  };
+  const fetchVideo = async (id) => {
+    setLoading(true);
 
-  // useEffect(() => {
-  //   fetchData(id);
-  // }, []);
-
+    try {
+      const { data } = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`,
+        options
+      );
+      setVideo(data?.results?.[0]?.key);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
+  };
+  if (error) {
+    return (
+      <div>
+        <h2>There was an error loading!</h2>
+      </div>
+    );
+  }
   return (
     <div>
-      <Button className="media" onClick={handleOpen}>
+      <div
+        className="media"
+        onClick={() => {
+          handleOpen();
+          fetchData(id);
+          fetchVideo(id);
+        }}
+      >
         {children}
-      </Button>
+      </div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -56,6 +93,7 @@ export default function ContentModal({ children, media_type, id }) {
         onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
+        disableScrollLock={false}
         slotProps={{
           backdrop: {
             timeout: 500,
@@ -63,16 +101,65 @@ export default function ContentModal({ children, media_type, id }) {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+          <Box sx={style} className="scrollbar">
+            {content && (
+              <div className={"classes.paper"}>
+                <div className="ContentModal">
+                  <img
+                    src={
+                      content.poster_path
+                        ? `${img_500}/${content.poster_path}`
+                        : unavailable
+                    }
+                    alt={content.name || content.title}
+                    className="ContentModal__portrait"
+                  />
+                  <img
+                    src={
+                      content.backdrop_path
+                        ? `${img_500}/${content.backdrop_path}`
+                        : unavailable
+                    }
+                    alt={content.name || content.title}
+                    className="ContentModal__landscape"
+                  />
+                  <div className="ContentModal__about">
+                    <span className="ContentModal__title">
+                      {content.name || content.title} (
+                      {(
+                        content.first_air_date ||
+                        content.release_date ||
+                        "-----"
+                      ).substring(0, 4)}
+                      )
+                    </span>
+                    {content.tagline && (
+                      <i className="tagline">{content.tagline}</i>
+                    )}
+
+                    <span className="ContentModal__description">
+                      {content.overview}
+                    </span>
+                    <div>
+                      <Carousel media_type={media_type} id={id} />
+                    </div>
+                    <Button
+                      variant="contained"
+                      startIcon={<YouTubeIcon />}
+                      color="secondary"
+                      target="__blank"
+                      href={`https://www.youtube.com/watch?v=${video}`}
+                    >
+                      Watch the Trailer
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </Box>
         </Fade>
       </Modal>
     </div>
   );
 }
+export default ContentModal;

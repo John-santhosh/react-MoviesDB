@@ -1,4 +1,3 @@
-import { ThemeProvider, createTheme } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 const CustomPagination = ({ setPage, page, numOfPages = 10 }) => {
