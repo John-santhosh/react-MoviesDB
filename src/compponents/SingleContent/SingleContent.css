@@ -10,11 +10,12 @@
   font-family: "Montserrat", sans-serif;
   transition: 0.4s all;
   position: relative;
+  font-weight: 600;
 }
 
 .media:hover {
   background-color: white;
-  color: black;
+  color: black !important;
 }
 
 .badge {
