@@ -11,7 +11,7 @@
 #
 
 This is movie searching website that allows users to search for movies by title, genre or other criteria.
-This site is build with `React, Materia UI ,Vanilla CSS` and used [Themoviedb](https://www.themoviedb.org/) API for videos and image used
+This site is build with `React, Materia UI ,Vanilla CSS` and uses [Themoviedb](https://www.themoviedb.org/) API for images and videos.
 
 ### Here are some of the features of Movie Searcher :
 
