@@ -67,8 +67,14 @@ const Search = () => {
               setPage(1);
             }}
           >
-            <Tab style={{ width: "50%" }} label="Search Movies" />
-            <Tab style={{ width: "50%" }} label="Search TV Series" />
+            <Tab
+              style={{ width: "50%", color: "#fff" }}
+              label="Search Movies"
+            />
+            <Tab
+              style={{ width: "50%", color: "#fff" }}
+              label="Search TV Series"
+            />
           </Tabs>
           <div>
             <div className="trending">

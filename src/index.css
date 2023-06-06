@@ -49,3 +49,6 @@ div {
   padding-top: 3rem;
   text-align: center;
 }
+div.MuiTabs-flexContainer {
+  justify-content: center;
+}

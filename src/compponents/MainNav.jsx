@@ -30,7 +30,7 @@ export default function FixedBottomNavigation() {
       navigate("/search");
     }
   }, [value]);
-
+  const style = { color: value === 0 ? "#fff" : "#c6f300" };
   return (
     <Box sx={{ pb: 4, backgroundColor: "#2d3131a" }} ref={ref}>
       <CssBaseline />
@@ -51,27 +51,27 @@ export default function FixedBottomNavigation() {
           onChange={(event, newValue) => {
             setValue(newValue);
           }}
-          sx={{ background: "#2d313a" }}
+          sx={{ background: "#5d626e" }}
         >
           {/* <Link to="/" > */}
           <BottomNavigationAction
-            style={{ color: "#fff" }}
+            style={{ color: value === 0 ? "#c6f300" : "#fff" }}
             label="Trending"
             icon={<WhatshotIcon />}
           />
           {/* </Link> */}
           <BottomNavigationAction
-            style={{ color: "#fff" }}
+            style={{ color: value === 1 ? "#c6f300" : "#fff" }}
             label="Movies"
             icon={<MovieIcon />}
           />
           <BottomNavigationAction
-            style={{ color: "#fff" }}
+            style={{ color: value === 2 ? "#c6f300" : "#fff" }}
             label="TV series"
             icon={<TvIcon />}
           />
           <BottomNavigationAction
-            style={{ color: "#fff" }}
+            style={{ color: value === 3 ? "#c6f300" : "#fff" }}
             label="Search"
             icon={<SearchIcon />}
           />
