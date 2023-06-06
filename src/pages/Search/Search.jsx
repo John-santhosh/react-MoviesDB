@@ -66,6 +66,7 @@ const Search = () => {
               setType(newValue);
               setPage(1);
             }}
+            style={{ margin: " 1rem 0" }}
           >
             <Tab
               style={{ width: "50%", color: "#fff" }}

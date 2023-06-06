@@ -2,7 +2,6 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 const CustomPagination = ({ setPage, page, numOfPages = 10 }) => {
   const handlePageChange = (event, value) => {
-    // setPage(page);
     setPage(value);
     window.scroll(0, 0);
   };

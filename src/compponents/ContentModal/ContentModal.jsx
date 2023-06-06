@@ -18,10 +18,7 @@ const style = {
   width: "90%",
   overflow: "auto",
   scrollbarWidth: "none !important",
-
-  // minHeight: "900px",
   maxHeight: "80%",
-  // height: "2000px",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -35,17 +32,13 @@ function ContentModal({ children, media_type, id }) {
   const handleClose = () => setOpen(false);
   const [content, setContent] = useState([]);
   const [video, setVideo] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const fetchData = async (id) => {
-    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://api.themoviedb.org/3/${media_type}/${id}?external_source=tvdb_id`,
         options
       );
-      setLoading(false);
-      // console.log(data);
       setContent(data);
     } catch (error) {
       console.log(error);
@@ -53,15 +46,12 @@ function ContentModal({ children, media_type, id }) {
     }
   };
   const fetchVideo = async (id) => {
-    setLoading(true);
-
     try {
       const { data } = await axios.get(
         `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`,
         options
       );
       setVideo(data?.results?.[0]?.key);
-      setLoading(false);
     } catch (error) {
       console.log(error);
       setError(true);
@@ -74,6 +64,7 @@ function ContentModal({ children, media_type, id }) {
       </div>
     );
   }
+
   return (
     <div>
       <div

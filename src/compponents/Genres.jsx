@@ -45,7 +45,7 @@ const Genres = ({
     fetchGenres();
   }, []);
   return (
-    <div>
+    <div style={{ margin: "1rem 0" }}>
       {selectedGenres.length !== 0 &&
         selectedGenres.map((item) => {
           return (
